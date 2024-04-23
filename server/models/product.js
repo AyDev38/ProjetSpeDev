@@ -1,8 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: '../db/database.sqlite'
-});
+const { DataTypes } = require('sequelize');
+const sequelize = require('./database');
 
 const Product = sequelize.define('Product', {
   libelle: {
@@ -34,4 +31,4 @@ const Product = sequelize.define('Product', {
   timestamps: true
 });
 
-module.exports = { sequelize, Product };
+module.exports = Product;
