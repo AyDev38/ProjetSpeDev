@@ -13,11 +13,11 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(session({
-    store: new SQLiteStore({ db: 'database.sqlite' }),
+    store: new SQLiteStore({ db: '../db/database.sqlite' }),
     secret: 'your secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true }  // `true` if you are using HTTPS
+    cookie: { secure: false, httpOnly: true}  // `true` if you are using HTTPS
   }));
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes); // Make sure user routes are also used
