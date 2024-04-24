@@ -11,13 +11,18 @@ router.get('/', (req, res) => {
 });
 
 // Inscription
+router.get('/register', (req, res) => {
+    res.render('register', { title: 'Register' });
+});
+
 router.post('/register', async (req, res) => {
     try {
-        const response = await axios.post(`${BASE_URL}/register`, req.body);
-        res.redirect('/login');  // Rediriger pour se connecter après l'inscription
+        const response = await axios.post(`${BASE_URL}/register`, req.body
+        );
+        res.redirect('/login');
     } catch (error) {
-        console.error('Registration error:', error);
-        res.status(400).send('Failed to register');
+        console.error('Register error:', error);
+        res.status(400).render('register', { message: 'Registration failed, please try again' });
     }
 });
 
