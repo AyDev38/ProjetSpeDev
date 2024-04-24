@@ -33,33 +33,54 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+// Middleware pour faire correspondre le token JWT envoyé par le client avec celui stocké dans la base de données
+const authenticateToken = async (req, res, next) => {
   try {
-    const product = await Product.update(req.body, {
-      where: { id: req.params.id }
-    });
-    if (product[0]) {
-      res.status(200).send({ message: 'Product updated.' });
-    } else {
-      res.status(404).send({ message: 'Product not found!' });
-    }
+      console.log(req.headers);
+      const token = req.headers.authorization.split(' ')[1];
+      const payload = jwt.verify(token, 'your_secret_key');
+      console.log(payload);
+      const user = await User.findByPk(payload.userId);
+      if (user && user.token === token) {
+          req.user = payload;
+          next();
+      } else {
+          res.status(401).send({ message: "Unauthorized" });
+      }
   } catch (error) {
-    res.status(500).send(error);
+      console.log(error);
+      res.status(401).send({ message: "Unauthorized" });
+  }
+};
+
+router.put('/:id', authenticateToken, async (req, res) => {
+  try {
+      const product = await Product.update(req.body, {
+          where: { id: req.params.id }
+      });
+      if (product[0]) {
+          res.status(200).send({ message: 'Product updated.' });
+      } else {
+          res.status(404).send({ message: 'Product not found!' });
+      }
+  } catch (error) {
+      res.status(500).send(error);
   }
 });
 
-router.delete('/:id', async (req, res) => {
+// Suppression d'un produit - Route protégée
+router.delete('/:id', authenticateToken, async (req, res) => {
   try {
-    const deleted = await Product.destroy({
-      where: { id: req.params.id }
-    });
-    if (deleted) {
-      res.status(200).send({ message: 'Product deleted.' });
-    } else {
-      res.status(404).send({ message: 'Product not found!' });
-    }
+      const deleted = await Product.destroy({
+          where: { id: req.params.id }
+      });
+      if (deleted) {
+          res.status(200).send({ message: 'Product deleted.' });
+      } else {
+          res.status(404).send({ message: 'Product not found!' });
+      }
   } catch (error) {
-    res.status(500).send(error);
+      res.status(500).send(error);
   }
 });
 

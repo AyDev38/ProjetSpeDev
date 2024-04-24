@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= data.libelle %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <% if (data.images && data.images.length > 0) { %>
+                        <img src="<%= data.images[0] %>" class="card-img" alt="<%= data.libelle %>" style="width: 100%;">
+                    <% } else { %>
+                        <img src="/images/placeholder.png" class="card-img" alt="No image available">
+                    <% } %>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h1 class="card-title"><%= data.libelle %></h1>
+                        <p class="card-text"><%= data.description %></p>
+                        <p class="card-text"><strong>Price:</strong> $<%= data.prix.toFixed(2) %></p>
+                        <p class="card-text"><strong>Category:</strong> <%= data.categorie %></p>
+                        
+                        <!-- Quantity Form -->
+                        <form action="/add-to-cart" method="POST">
+                            <input type="hidden" name="productId" value="<%= data.id %>">
+                            <div class="form-group">
+                                <label for="quantity">Quantity:</label>
+                                <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" style="width: auto;">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

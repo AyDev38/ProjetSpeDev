@@ -4,6 +4,7 @@ const router = express.Router();
 
 // URL de base pour le serveur back-end
 const BASE_URL = 'http://localhost:5000/api/users';
+const BASE_URL_PRODUCT = 'http://localhost:5000/api/products';
 
 // Page d'accueil
 router.get('/', (req, res) => {
@@ -76,5 +77,32 @@ router.get('/logout', async (req, res) => {
         res.status(400).send('Failed to logout');
     }
 });
+
+// afficher les produits
+router.get('/products', async (req, res) => {
+    try {
+        const response = await axios.get(`${BASE_URL_PRODUCT}`);
+        console.log(response.data);
+        res.render('products', { title: 'Products', data: response.data });
+    } catch (error) {
+        console.error('Products error:', error);
+        res.status(400).send('Failed to display products');
+    }
+}
+);
+
+// afficher un produit par son id
+router.get('/products/:id', async (req, res) => {
+    try {
+        const response = await axios.get(`${BASE_URL_PRODUCT}/${req.params.id}`);
+        console.log(response.data);
+        res.render('product', { title: 'Product', data: response.data });
+    } catch (error) {
+        console.error('Product error:', error);
+        res.status(400).send('Failed to display product');
+    }
+}
+);
+
 
 module.exports = router;
