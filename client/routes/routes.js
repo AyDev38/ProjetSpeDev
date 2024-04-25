@@ -52,10 +52,13 @@ router.post('/login', async (req, res) => {
 // Tableau de bord
 router.get('/dashboard', async (req, res) => {
     try {
-        const response = await axios.get(`${BASE_URL}/dashboard`, {
+        // const response = await axios.get(`${BASE_URL}/dashboard`, {
+        //     headers: { Authorization: `Bearer ${req.session.token}` }
+        // });
+        const infosUser = await axios.get(`${BASE_URL}/infos`, {
             headers: { Authorization: `Bearer ${req.session.token}` }
         });
-        res.render('dashboard', { title: 'Dashboard', data: response.data });
+        res.render('dashboard', { title: 'Dashboard', user: infosUser.data.user });
     } catch (error) {
         console.error('Dashboard error:', error);
         res.status(401).redirect('/login');

@@ -68,9 +68,28 @@ const authenticateToken = async (req, res, next) => {
 };
 
 // Route tableau de bord avec vérification du token
-router.get('/dashboard', authenticateToken, (req, res) => {
-    res.send({ message: "Dashboard" });
+// router.get('/dashboard', authenticateToken, (req, res) => {
+//     res.send({ message: "Dashboard" });
+// });
+
+router.get('/infos', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const user = await User.findByPk(userId);
+        if (user) {
+            const userInfo = {
+                user
+            };
+            res.status(200).send(userInfo);
+        } else {
+            res.status(404).send({ message: "User not found" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal Server Error" });
+    }
 });
+
 
 
 // Déconnexion
