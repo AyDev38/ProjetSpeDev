@@ -100,6 +100,7 @@ router.get('/products', async (req, res) => {
         } else {
             response = await axios.get(`${BASE_URL_PRODUCT}`);
         }
+        console.log("response:", response.data)
         res.render('products', { title: 'Products', data: response.data });
     } catch (error) {
         console.error('Products error:', error);
