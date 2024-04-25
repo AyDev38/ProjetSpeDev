@@ -20,7 +20,6 @@ router.get('/', async (req, res) => {
       products = await Product.findAll({
         where: { libelle: { [Op.like]: '%' + search + '%' } }
       });
-      console.log("-------------------- products --------------------", products);
     } else {
       products = await Product.findAll();
     }
