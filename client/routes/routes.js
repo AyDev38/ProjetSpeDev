@@ -95,7 +95,7 @@ router.get('/products', async (req, res) => {
         } else {
             response = await axios.get(`${BASE_URL_PRODUCT}`);
         }
-        console.log("response:", response.data)
+        // console.log("response:", response.data)
         res.render('products', { title: 'Products', data: response.data });
     } catch (error) {
         console.error('Products error:', error);
@@ -107,7 +107,7 @@ router.get('/products', async (req, res) => {
 router.get('/products/:id', async (req, res) => {
     try {
         const response = await axios.get(`${BASE_URL_PRODUCT}/${req.params.id}`);
-        console.log(response.data);
+        // console.log(response.data);
         res.render('product', { title: 'Product', data: response.data });
     } catch (error) {
         console.error('Product error:', error);
@@ -121,7 +121,7 @@ router.get('/add-product', async (req, res) => {
 });
 
 router.post('/add-product', async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     req.body.createdAt = new Date();
     req.body.updatedAt = new Date();
 
@@ -138,5 +138,30 @@ router.post('/add-product', async (req, res) => {
         res.status(400).send('Failed to add product');
     }
 });
+
+//delete product
+router.get('/delete-product/:id', async (req, res) => {
+    
+    try {
+        const product = await axios.get(`${BASE_URL_PRODUCT}/${req.params.id}`)
+        res.render('delete-product', {product: product.data})
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Failed to delete product')
+    }
+    
+});
+
+router.post('/delete-product/:id', async (req, res) => {
+    console.log("dans le delete")
+    try {
+        const product = await axios.delete(`${BASE_URL_PRODUCT}/${req.params.id}`,{
+            headers: { Authorization: `Bearer ${req.session.token}`}});
+        res.redirect("/products"); // Redirigez vers la page des produits après la suppression
+    } catch (error) {
+        console.log(error);
+        res.status(400).send('Failed to delete product');
+    }
+})
 
 module.exports = router;

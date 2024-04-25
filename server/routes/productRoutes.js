@@ -1,14 +1,13 @@
 const express = require('express');
 const Product = require('../models/product');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 const { Op } = require('sequelize');
 
 router.post('/', async (req, res) => {
   try {
-    console.log("dans la route de création")
-    console.log("Données reçues depuis le client:", req.body);
     const product = await Product.create(req.body);
-    console.log("Produit créé:", product);
     await product.save();
     res.status(201).send(product);
   } catch (error) {
@@ -50,10 +49,10 @@ router.get('/:id', async (req, res) => {
 // Middleware pour faire correspondre le token JWT envoyé par le client avec celui stocké dans la base de données
 const authenticateToken = async (req, res, next) => {
   try {
-      console.log(req.headers);
+      // console.log(req.headers);
       const token = req.headers.authorization.split(' ')[1];
       const payload = jwt.verify(token, 'your_secret_key');
-      console.log(payload);
+      // console.log(payload);
       const user = await User.findByPk(payload.userId);
       if (user && user.token === token) {
           req.user = payload;

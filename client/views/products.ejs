@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title><%= title %></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style nonce="abc123">
         /* Style pour gérer les textes trop longs avec des ellipses */
         .card-text, .card-title {
@@ -17,7 +18,7 @@
             object-fit: cover; /* Assure que l'image couvre bien l'espace alloué sans déformation */
         }
         .card-body {
-            height: 220px; /* Hauteur fixe pour le contenu du corps de la carte */
+            /* height: 220px; Hauteur fixe pour le contenu du corps de la carte */
         }
     </style>
 </head>
@@ -47,12 +48,15 @@
                             <p class="card-text"><strong>Category:</strong> <%= product.categorie %></p>
                             <a href="/products/<%= product.id %>" class="btn btn-primary">View Details</a>
                             <a href="#" class="btn btn-primary">Add to Cart</a>
+                            <div class="btn-group">
+                                <a href="/edit-product/<%= product.id %>" class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i></a>
+                                <a href="/delete-product/<%= product.id %>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             <% }) %>
         </div>
-        <% }) %>
       </div>
     </div>
   </body>

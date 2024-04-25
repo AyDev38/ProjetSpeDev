@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet.contentSecurityPolicy({
     directives: {
         defaultSrc: ["'self'"],  // Seulement charger les ressources du même origine
-        styleSrc: ["'self'", "'nonce-abc123'", "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"],  // Sources autorisées pour les styles
+        styleSrc: ["'self'", "'nonce-abc123'", "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"],  // Sources autorisées pour les styles
         scriptSrc: ["https://trusted.cdn.com"],  // Sources autorisées pour les scripts
         imgSrc: ["'self'", "https://fakestoreapi.com/img/"],  // Sources autorisées pour les images
         objectSrc: ["'none'"],  // Bloque les <object>, <embed>, et <applet>
@@ -25,8 +25,8 @@ app.use(helmet.contentSecurityPolicy({
 }));
 app.use(bodyParser.json());
 app.use(cookieParser()); // Ajouter cookie-parser avant CSRF middleware
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection);
+// const csrfProtection = csrf({ cookie: true });
+// app.use(csrfProtection);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
     secret: 'secret',
@@ -38,10 +38,10 @@ app.use(session({
 const routes = require('./routes/routes');
 app.use('/', routes);
 
-app.get('*', (req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-});
+// app.get('*', (req, res, next) => {
+//     res.locals.csrfToken = req.csrfToken();
+//     next();
+// });
 
 app.listen(port, () => {
     console.log(`Front-end server running on http://localhost:${port}`);
