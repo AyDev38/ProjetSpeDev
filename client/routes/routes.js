@@ -78,11 +78,28 @@ router.get('/logout', async (req, res) => {
     }
 });
 
-// afficher les produits
+// afficher les produits 
+// router.get('/products', async (req, res) => {
+//     try {
+//         const response = await axios.get(`${BASE_URL_PRODUCT}`);
+//         res.render('products', { title: 'Products', data: response.data });
+//     } catch (error) {
+//         console.error('Products error:', error);
+//         res.status(400).send('Failed to display products');
+//     }
+// }
+// );
+
+// afficher les produits avec un search optionnel
 router.get('/products', async (req, res) => {
     try {
-        const response = await axios.get(`${BASE_URL_PRODUCT}`);
-        console.log(response.data);
+        const search = req.query.search;
+        let response;
+        if (search) {
+            response = await axios.get(`${BASE_URL_PRODUCT}?search=${search}`);
+        } else {
+            response = await axios.get(`${BASE_URL_PRODUCT}`);
+        }
         res.render('products', { title: 'Products', data: response.data });
     } catch (error) {
         console.error('Products error:', error);

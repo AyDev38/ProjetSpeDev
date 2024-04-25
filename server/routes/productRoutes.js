@@ -11,12 +11,21 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Recode le get avec un search optionnel
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.findAll();
+    const search = req.query.search;
+    let products;
+    if (search) {
+      products = await Product.findAll({
+        where: { libelle: search }
+      });
+    } else {
+      products = await Product.findAll();
+    }
     res.status(200).send(products);
   } catch (error) {
-    res.status(500).send(error);
+    res.status
   }
 });
 
