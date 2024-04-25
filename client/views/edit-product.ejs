@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product - <%= data.libelle %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Edit Product - <%= data.libelle %></h1>
+        <form action="/edit-product/<%= data.id %>" method="POST">
+            <div class="form-group">
+                <label for="libelle">Libelle:</label>
+                <input type="text" class="form-control" id="libelle" name="libelle" value="<%= data.libelle %>" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" name="description" rows="3"><%= data.description %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="prix">Price:</label>
+                <input type="number" class="form-control" id="prix" name="prix" value="<%= data.prix %>" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="categorie">Category:</label>
+                <input type="text" class="form-control" id="categorie" name="categorie" value="<%= data.categorie %>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="/products/<%= data.id %>" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

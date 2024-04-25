@@ -141,27 +141,55 @@ router.post('/add-product', async (req, res) => {
 
 //delete product
 router.get('/delete-product/:id', async (req, res) => {
-    
+
     try {
         const product = await axios.get(`${BASE_URL_PRODUCT}/${req.params.id}`)
-        res.render('delete-product', {product: product.data})
+        res.render('delete-product', { product: product.data })
     } catch (error) {
         console.log(error)
         res.status(400).send('Failed to delete product')
     }
-    
+
 });
 
 router.post('/delete-product/:id', async (req, res) => {
-    console.log("dans le delete")
     try {
-        const product = await axios.delete(`${BASE_URL_PRODUCT}/${req.params.id}`,{
-            headers: { Authorization: `Bearer ${req.session.token}`}});
-        res.redirect("/products"); // Redirigez vers la page des produits après la suppression
+        const product = await axios.delete(`${BASE_URL_PRODUCT}/${req.params.id}`, {
+            headers: { Authorization: `Bearer ${req.session.token}` }
+        });
+        res.redirect("/products");
     } catch (error) {
         console.log(error);
         res.status(400).send('Failed to delete product');
     }
 })
+
+//edit product
+router.get('/edit-product/:id', async (req, res) => {
+    try {
+        const product = await axios.get(`${BASE_URL_PRODUCT}/${req.params.id}`)
+        console.log(product)
+        res.render('edit-product', { data: product.data })
+    } catch (error) {
+        console.log(error)
+        res.status(400).send("Failed to edit product")
+    }
+
+})
+
+router.post('/edit-product/:id', async (req, res) => {
+    try {
+        console.log(req.body)
+        const product = await axios.put(`${BASE_URL_PRODUCT}/${req.params.id}`, req.body, {
+            headers: { Authorization: `Bearer ${req.session.token}` }
+        });
+        res.redirect("/products");
+    } catch (error) {
+        console.log(error)
+        res.status(400).send("Failed to edit product")
+    }
+
+})
+
 
 module.exports = router;

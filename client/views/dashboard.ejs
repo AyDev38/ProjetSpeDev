@@ -12,8 +12,15 @@
   <body>
     <div class="container mt-5">
       <h2>Welcome <%= user.username %> on your dashboard</h2>
-      <a class="btn btn-primary" href="/add-product" role="button">Add products</a>
-      <a class="btn btn-secondary" href="/logout" role="button">Logout</a>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <a class="btn btn-primary" href="/add-product" role="button"
+          >Add product</a
+        >
+        <a class="btn btn-primary" href="/products" role="button"
+          >Show products</a
+        >
+        <a class="btn btn-secondary" href="/logout" role="button">Logout</a>
+      </div>
     </div>
   </body>
 </html>
