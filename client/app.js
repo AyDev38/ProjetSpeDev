@@ -24,9 +24,6 @@ app.use(helmet.contentSecurityPolicy({
     }
 }));
 app.use(bodyParser.json());
-app.use(cookieParser()); // Ajouter cookie-parser avant CSRF middleware
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
     secret: 'secret',
@@ -34,14 +31,19 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.use(cookieParser());
+app.use(csrf({ cookie: true }));
+
+// Mettre à disposition le token CSRF pour les vues EJS
+app.use((req, res, next) => {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
+
 
 const routes = require('./routes/routes');
 app.use('/', routes);
 
-app.get('*', (req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-});
 
 app.listen(port, () => {
     console.log(`Front-end server running on http://localhost:${port}`);
