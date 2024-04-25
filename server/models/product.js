@@ -24,7 +24,11 @@ const Product = sequelize.define('Product', {
       return rawValue ? rawValue.split(';') : [];
     },
     set(images) {
-      this.setDataValue('images', images.join(';'));
+      if (Array.isArray(images)) {
+        this.setDataValue('images', images.join(';'));
+      } else {
+        this.setDataValue('images', images);
+      }
     }
   }
 }, {

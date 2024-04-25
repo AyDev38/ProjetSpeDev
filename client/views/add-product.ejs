@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Product</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Create Product</h1>
+        <form action="/add-product" method="POST">
+            <div class="form-group">
+                <label for="libelle">Name:</label>
+                <input type="text" class="form-control" id="libelle" name="libelle" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="prix">Prize:</label>
+                <input type="number" class="form-control" id="prix" name="prix" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="categorie">Category:</label>
+                <input type="text" class="form-control" id="categorie" name="categorie" required>
+            </div>
+            <div class="form-group">
+                <label for="images">Images (separated by commas):</label>
+                <input type="text" class="form-control" id="images" name="images" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+        
+    </div>
+</body>
+</html>
