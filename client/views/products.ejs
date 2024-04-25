@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <title><%= title %></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style nonce="abc123">
+        /* Style pour gérer les textes trop longs avec des ellipses */
+        .card-text, .card-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-img-top {
+            width: 100%;
+            height: 200px; /* Définissez une hauteur fixe pour les images */
+            object-fit: cover; /* Assure que l'image couvre bien l'espace alloué sans déformation */
+        }
+        .card-body {
+            height: 220px; /* Hauteur fixe pour le contenu du corps de la carte */
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-4">
@@ -20,7 +36,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card">
                         <% if (product.images && product.images.length > 0) { %>
-                            <img src="<%= product.images[0] %>" class="card-img-top" alt="<%= product.libelle %>">
+                            <img src="<%= product.images %>" class="card-img-top" alt="<%= product.libelle %>">
                         <% } else { %>
                             <img src="/images/placeholder.png" class="card-img-top" alt="No image available">
                         <% } %>
@@ -30,7 +46,7 @@
                             <p class="card-text"><strong>Price:</strong> $<%= product.prix.toFixed(2) %></p>
                             <p class="card-text"><strong>Category:</strong> <%= product.categorie %></p>
                             <a href="/products/<%= product.id %>" class="btn btn-primary">View Details</a>
-                            <a href="#" class="btn btn-primary">Ajouter au panier</a>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
                         </div>
                     </div>
                 </div>

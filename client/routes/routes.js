@@ -27,6 +27,10 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// axios.post(...)
+//   .then(() => res.redirect('/login'))
+//   .catch(err => ...); 
+
 // Connexion
 router.get('/login', (req, res) => {
     res.render('login', { title: 'Login' });
