@@ -22,10 +22,6 @@ app.use(session({
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes); // Make sure user routes are also used
 
-
-
-
-
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}.`);

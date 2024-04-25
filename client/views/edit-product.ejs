@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+    <%- include('navbar') %>
     <div class="container mt-5">
         <h1>Edit Product - <%= data.libelle %></h1>
         <form action="/edit-product/<%= data.id %>" method="POST">
@@ -27,6 +28,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Save Changes</button>
             <a href="/products/<%= data.id %>" class="btn btn-secondary">Cancel</a>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
     </div>
 </body>

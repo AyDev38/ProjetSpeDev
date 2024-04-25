@@ -89,6 +89,7 @@ router.get('/logout', async (req, res) => {
 router.get('/products', async (req, res) => {
     try {
         const search = req.query.search;
+        const isConnected = req.session.token ? true : false;
         let response;
         if (search) {
             response = await axios.get(`${BASE_URL_PRODUCT}?search=${search}`);
@@ -96,7 +97,7 @@ router.get('/products', async (req, res) => {
             response = await axios.get(`${BASE_URL_PRODUCT}`);
         }
         // console.log("response:", response.data)
-        res.render('products', { title: 'Products', data: response.data });
+        res.render('products', { title: 'Products', data: response.data, isConnected: isConnected});
     } catch (error) {
         console.error('Products error:', error);
         res.status(400).send('Failed to display products');
@@ -107,8 +108,9 @@ router.get('/products', async (req, res) => {
 router.get('/products/:id', async (req, res) => {
     try {
         const response = await axios.get(`${BASE_URL_PRODUCT}/${req.params.id}`);
+        const isConnected = req.session.token ? true : false;
         // console.log(response.data);
-        res.render('product', { title: 'Product', data: response.data });
+        res.render('product', { title: 'Product', data: response.data, isConnected: isConnected });
     } catch (error) {
         console.error('Product error:', error);
         res.status(400).send('Failed to display product');
