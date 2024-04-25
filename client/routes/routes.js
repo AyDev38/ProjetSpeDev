@@ -81,18 +81,6 @@ router.get('/logout', async (req, res) => {
     }
 });
 
-// afficher les produits 
-// router.get('/products', async (req, res) => {
-//     try {
-//         const response = await axios.get(`${BASE_URL_PRODUCT}`);
-//         res.render('products', { title: 'Products', data: response.data });
-//     } catch (error) {
-//         console.error('Products error:', error);
-//         res.status(400).send('Failed to display products');
-//     }
-// }
-// );
-
 // afficher les produits avec un search optionnel
 router.get('/products', async (req, res) => {
     try {
@@ -109,8 +97,7 @@ router.get('/products', async (req, res) => {
         console.error('Products error:', error);
         res.status(400).send('Failed to display products');
     }
-}
-);
+});
 
 // afficher un produit par son id
 router.get('/products/:id', async (req, res) => {
@@ -122,8 +109,30 @@ router.get('/products/:id', async (req, res) => {
         console.error('Product error:', error);
         res.status(400).send('Failed to display product');
     }
-}
-);
+});
 
+//add prodcut 
+router.get('/add-product', async (req, res) => {
+    res.render('add-product');
+});
+
+router.post('/add-product', async (req, res) => {
+    console.log(req.body)
+    req.body.createdAt = new Date();
+    req.body.updatedAt = new Date();
+
+    // Convertir le prix en nombre
+    req.body.prix = parseFloat(req.body.prix);
+
+    try {
+        const response = await axios.post(`${BASE_URL_PRODUCT}`, req.body, {
+            headers: { Authorization: `Bearer ${req.session.token}` }
+        });
+        res.redirect('/products');
+    } catch (error) {
+        console.error('Add product error:', error);
+        res.status(400).send('Failed to add product');
+    }
+});
 
 module.exports = router;

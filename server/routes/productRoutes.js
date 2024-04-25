@@ -5,9 +5,14 @@ const { Op } = require('sequelize');
 
 router.post('/', async (req, res) => {
   try {
+    console.log("dans la route de création")
+    console.log("Données reçues depuis le client:", req.body);
     const product = await Product.create(req.body);
+    console.log("Produit créé:", product);
+    await product.save();
     res.status(201).send(product);
   } catch (error) {
+    console.error("Erreur lors de la création du produit:", error);
     res.status(400).send(error);
   }
 });
