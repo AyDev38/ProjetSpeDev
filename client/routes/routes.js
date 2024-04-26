@@ -210,13 +210,13 @@ router.get('/cart', async (req, res) => {
         const cart = await axios.get(`${BASE_URL_CART}`, {
             params: { userId: userId } // Passez l'ID de l'utilisateur comme paramètre
         });
-        console.log("------------ CART ------------", cart.data)
         res.render('cart', { cart: cart.data, isConnected: isConnected });
     } catch (error) {
         console.log(error);
     }
 });
 
+//add cart
 router.get('/add-to-cart/:id/:quantity', async (req, res) => {
     try{
         const user = await axios.get(`${BASE_URL}/infos`, {
@@ -233,10 +233,20 @@ router.get('/add-to-cart/:id/:quantity', async (req, res) => {
     }
 })
 
+//add cart
 router.post('/add-to-cart', async (req, res) => {
     try{
-        console.log(req.body)
         res.redirect('/add-to-cart/' + req.body.productId + "/" + req.body.quantity)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// delete row cart
+router.get('/delete-cart/:id', async (req, res) => {
+    try{
+        const cart = await axios.delete(`${BASE_URL_CART}/${req.params.id}`)
+        res.redirect("/cart");
     } catch (error) {
         console.log(error)
     }

@@ -42,23 +42,19 @@ router.get('/', async (req, res) => {
         res.status(500).send(error);
     }
 });
-router.delete('/cart/:productId', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
-        const product = await Product.findByPk(req.params.productId);
-        if (product) {
-            const cart = await Cart.findOne({ where: { userId: req.user.userId } });
-            if (cart) {
-                await cart.removeProduct(product);
-                res.status(200).send({ message: 'Product removed from cart.' });
-            } else {
-                res.status(404).send({ message: 'Cart not found!' });
-            }
+        const deleted = await Cart.destroy({
+          where: { id: req.params.id }
+        });
+        if (deleted) {
+          res.status(200).send({ message: 'Product deleted to cart.' });
         } else {
-            res.status(404).send({ message: 'Product not found!' });
+          res.status(404).send({ message: 'Product not found!' });
         }
-    } catch (error) {
+      } catch (error) {
         res.status(500).send(error);
-    }
+      }
 }
 );
 

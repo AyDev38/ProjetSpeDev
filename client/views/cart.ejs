@@ -33,7 +33,7 @@
                             <td><%= item.quantity %></td>
                             <td>$<%= item.product.prix * item.quantity %></td>
                             <td>
-                                <a href="/cart/remove/<%= item.id %>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                <a href="/delete-cart/<%= item.id %>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     <% }) %>
@@ -46,7 +46,7 @@
         </table>
         <div class="d-flex justify-content-between">
             <a href="/products" class="btn btn-primary">Continue Shopping</a>
-            <h3>Total: $<%= total %> $</h3>
+            <h3>Total: $<%= total %></h3>
             <a href="/cart/checkout" class="btn btn-success">Checkout</a>
         </div>
     </div>

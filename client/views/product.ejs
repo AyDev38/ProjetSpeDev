@@ -63,8 +63,9 @@
                   />
                 </div>
                 <div class="btn-group">
-                  <a href="/add-to-cart/<%= data.id %>/" class="btn btn-primary"
-                  >Add to Cart</a>
+                  <button type="submit" class="btn btn-primary">
+                    Add to Cart
+                    </button>
                   <% if (isConnected) { %>
 
                   <a href="/edit-product/<%= data.id %>" class="btn btn-warning"
