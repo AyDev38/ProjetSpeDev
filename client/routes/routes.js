@@ -252,5 +252,33 @@ router.get('/delete-cart/:id', async (req, res) => {
     }
 })
 
+// Route pour récupérer et renvoyer les produits triés par catégorie en JSON
+router.get('/product-categories', async (req, res) => {
+    try {
+        const response = await axios.get(`${BASE_URL_PRODUCT}`);
+        const products = response.data;
+
+        const categories = products.reduce((acc, product) => {
+            const { categorie } = product;
+            if (!acc[categorie]) {
+                acc[categorie] = 0;
+            }
+            acc[categorie]++;
+            return acc;
+        }, {});
+
+        const categoriesCount = Object.keys(categories).map(key => ({
+            nom: key,
+            compte: categories[key]
+        }));
+
+        // Convertit le tableau en JSON compact sans indentation
+        const formattedJson = JSON.stringify(categoriesCount,null, 2);
+        res.type('json').send(formattedJson);
+    } catch (error) {
+        console.error('Error retrieving products:', error);
+        res.status(500).json({ error: 'Failed to retrieve products' });
+    }
+});
 
 module.exports = router;
