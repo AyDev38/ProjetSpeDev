@@ -5,6 +5,7 @@ const router = express.Router();
 // URL de base pour le serveur back-end
 const BASE_URL = 'http://localhost:5000/api/users';
 const BASE_URL_PRODUCT = 'http://localhost:5000/api/products';
+const BASE_URL_CART = 'http://localhost:5000/api/cart';
 
 // Page d'accueil
 router.get('/', (req, res) => {
@@ -198,5 +199,16 @@ router.post('/edit-product/:id', async (req, res) => {
 
 })
 
+//show cart
+router.get('/cart', async (req, res) => {
+    try{
+        const cart = await axios.get(`${BASE_URL_CART}`, {
+            headers: { Authorization: `Bearer ${req.session.token}` }
+        });
+        res.render('cart', {cart: cart})
+    } catch (error) {
+
+    }
+})
 
 module.exports = router;
