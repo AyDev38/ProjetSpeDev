@@ -8,12 +8,14 @@ const BASE_URL_PRODUCT = 'http://localhost:5000/api/products';
 
 // Page d'accueil
 router.get('/', (req, res) => {
-    res.render('index', { title: 'Home' });
+    const isConnected = req.session.token ? true : false;
+    res.render('index', { title: 'Home', isConnected: isConnected });
 });
 
 // Inscription
 router.get('/register', (req, res) => {
-    res.render('register', { title: 'Register' });
+    const isConnected = req.session.token ? true : false;
+    res.render('register', { title: 'Register', isConnected: isConnected });
 });
 
 router.post('/register', async (req, res) => {
@@ -33,7 +35,8 @@ router.post('/register', async (req, res) => {
 
 // Connexion
 router.get('/login', (req, res) => {
-    res.render('login', { title: 'Login' });
+    const isConnected = req.session.token ? true : false;
+    res.render('login', { title: 'Login' , isConnected: isConnected});
 });
 
 router.post('/login', async (req, res) => {
@@ -62,7 +65,8 @@ router.get('/dashboard', async (req, res) => {
         const infosUser = await axios.get(`${BASE_URL}/infos`, {
             headers: { Authorization: `Bearer ${req.session.token}` }
         });
-        res.render('dashboard', { title: 'Dashboard', user: infosUser.data.user });
+        const isConnected = req.session.token ? true : false;
+        res.render('dashboard', { title: 'Dashboard', user: infosUser.data.user , isConnected: isConnected});
     } catch (error) {
         console.error('Dashboard error:', error);
         res.status(401).redirect('/login');
@@ -119,7 +123,8 @@ router.get('/products/:id', async (req, res) => {
 
 //add prodcut 
 router.get('/add-product', async (req, res) => {
-    res.render('add-product');
+    const isConnected = req.session.token ? true : false;
+    res.render('add-product', {isConnected: isConnected});
 });
 
 router.post('/add-product', async (req, res) => {
@@ -146,7 +151,8 @@ router.get('/delete-product/:id', async (req, res) => {
 
     try {
         const product = await axios.get(`${BASE_URL_PRODUCT}/${req.params.id}`)
-        res.render('delete-product', { product: product.data })
+        const isConnected = req.session.token ? true : false;
+        res.render('delete-product', { product: product.data , isConnected: isConnected})
     } catch (error) {
         console.log(error)
         res.status(400).send('Failed to delete product')
@@ -170,8 +176,8 @@ router.post('/delete-product/:id', async (req, res) => {
 router.get('/edit-product/:id', async (req, res) => {
     try {
         const product = await axios.get(`${BASE_URL_PRODUCT}/${req.params.id}`)
-        console.log(product)
-        res.render('edit-product', { data: product.data })
+        const isConnected = req.session.token ? true : false;
+        res.render('edit-product', { data: product.data , isConnected: isConnected})
     } catch (error) {
         console.log(error)
         res.status(400).send("Failed to edit product")
@@ -181,7 +187,6 @@ router.get('/edit-product/:id', async (req, res) => {
 
 router.post('/edit-product/:id', async (req, res) => {
     try {
-        console.log(req.body)
         const product = await axios.put(`${BASE_URL_PRODUCT}/${req.params.id}`, req.body, {
             headers: { Authorization: `Bearer ${req.session.token}` }
         });
