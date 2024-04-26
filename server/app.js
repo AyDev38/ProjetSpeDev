@@ -4,6 +4,7 @@ const cors = require('cors');
 const sequelize = require('./models/database');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 const session = require('express-session');
 const SQLiteStore = require('connect-sqlite3')(session);
 
@@ -21,6 +22,7 @@ app.use(session({
   }));
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes); // Make sure user routes are also used
+app.use('/api/cart', cartRoutes); // Make sure user routes are also used
 
 sequelize.sync().then(() => {
   app.listen(port, () => {

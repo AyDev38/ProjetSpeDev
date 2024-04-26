@@ -5,6 +5,7 @@ const router = express.Router();
 // URL de base pour le serveur back-end
 const BASE_URL = 'http://localhost:5000/api/users';
 const BASE_URL_PRODUCT = 'http://localhost:5000/api/products';
+const BASE_URL_CART = 'http://localhost:5000/api/cart';
 
 // Page d'accueil
 router.get('/', (req, res) => {
@@ -196,6 +197,59 @@ router.post('/edit-product/:id', async (req, res) => {
         res.status(400).send("Failed to edit product")
     }
 
+})
+
+//show cart
+router.get('/cart', async (req, res) => {
+    try{
+        const isConnected = req.session.token ? true : false;
+        const user = await axios.get(`${BASE_URL}/infos`, {
+            headers: { Authorization: `Bearer ${req.session.token}` }
+        });
+        const userId = user.data.user.id; // Récupérez l'ID de l'utilisateur
+        const cart = await axios.get(`${BASE_URL_CART}`, {
+            params: { userId: userId } // Passez l'ID de l'utilisateur comme paramètre
+        });
+        res.render('cart', { cart: cart.data, isConnected: isConnected });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+//add cart
+router.get('/add-to-cart/:id/:quantity', async (req, res) => {
+    try{
+        const user = await axios.get(`${BASE_URL}/infos`, {
+            headers: { Authorization: `Bearer ${req.session.token}` }
+        });
+        req.body.userId = user.data.user.id;
+        req.body.productId = parseInt(req.params.id);
+        req.body.quantity = parseInt(req.params.quantity);
+        const cart = await axios.post(`${BASE_URL_CART}/add-to-cart`, req.body);
+        const isConnected = req.session.token ? true : false
+        res.redirect("/cart")
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+//add cart
+router.post('/add-to-cart', async (req, res) => {
+    try{
+        res.redirect('/add-to-cart/' + req.body.productId + "/" + req.body.quantity)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// delete row cart
+router.get('/delete-cart/:id', async (req, res) => {
+    try{
+        const cart = await axios.delete(`${BASE_URL_CART}/${req.params.id}`)
+        res.redirect("/cart");
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 
