@@ -1,4 +1,4 @@
-# Projet SpéDev
+# Projet SpéDev Matthieu, Aymeric
 
 Ce README vous guide à travers la mise en place et le démarrage du projet Node.js qui comprend une partie serveur et une partie client.
 
