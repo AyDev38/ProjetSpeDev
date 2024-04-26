@@ -9,5 +9,13 @@
     "jsonwebtoken": "^9.0.2",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7"
+  },
+  "scripts": {
+    "test": "mocha ./test/**/*.js"
+  },
+  "devDependencies": {
+    "chai": "^5.1.0",
+    "mocha": "^10.4.0",
+    "supertest": "^7.0.0"
   }
 }
