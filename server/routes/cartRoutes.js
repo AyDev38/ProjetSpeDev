@@ -7,22 +7,32 @@ const Cart = require('../models/cart');
 
 
 router.post('/add-to-cart', async (req, res) => {
-    console.log(req.body)
+    const isConnected = req.session.token ? true : false; // Vérifiez si l'utilisateur est connecté via un token en session
+    const { productId, quantity } = req.body;
+
     try {
-        const product = await Product.findByPk(req.body.productId);
-        if (product) {
-            // let cart = await Cart.findOne({ where: { userId: req.body.userId } });
-            const cart = await Cart.create({ userId: req.body.userId, productId: req.body.productId, quantity: req.body.quantity  });
-            // await cart.addProduct(product, { through: { quantity: req.body.quantity } });
+        const product = await Product.findByPk(productId);
+        if (!product) {
+            return res.status(404).send({ message: 'Product not found!' });
+        }
+
+        if (isConnected) {
+            // L'utilisateur est connecté, stocker dans la BDD
+            const userId = req.session.userId; // Assumez que l'ID utilisateur est stocké dans la session lors de la connexion
+            const cart = await Cart.create({ userId, productId, quantity });
             res.status(201).send({ message: 'Product added to cart.' });
         } else {
-            res.status(404).send({ message: 'Product not found!' });
+            // L'utilisateur n'est pas connecté, stocker dans la session
+            if (!req.session.cart) {
+                req.session.cart = [];
+            }
+            req.session.cart.push({ productId, quantity });
+            res.status(201).send({ message: 'Product added to cart in session.' });
         }
     } catch (error) {
         res.status(500).send(error);
     }
-}
-);
+});
 
 router.get('/', async (req, res) => {
     try {
