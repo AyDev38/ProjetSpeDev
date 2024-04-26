@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <%- include('navbar') %>
@@ -21,16 +22,18 @@
                 </tr>
             </thead>
             <tbody>
+                <% total = 0 %>
                 <% if (cart && cart.length > 0) { %>
                     <% cart.forEach((item, index) => { %>
+                        <% total += item.product.prix*item.quantity %>
                         <tr>
                             <th scope="row"><%= index + 1 %></th>
-                            <td><%= item.libelle %></td>
-                            <td>$<%= item.prix %></td>
+                            <td><%= item.product.libelle %></td>
+                            <td>$<%= item.product.prix %></td>
                             <td><%= item.quantity %></td>
-                            <td>$<%= item.prix * item.quantity %></td>
+                            <td>$<%= item.product.prix * item.quantity %></td>
                             <td>
-                                <a href="/cart/remove/<%= item.id %>" class="btn btn-danger">Remove</a>
+                                <a href="/cart/remove/<%= item.id %>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     <% }) %>
@@ -43,7 +46,7 @@
         </table>
         <div class="d-flex justify-content-between">
             <a href="/products" class="btn btn-primary">Continue Shopping</a>
-            <h3>Total: $<%= total %></h3>
+            <h3>Total: $<%= total %> $</h3>
             <a href="/cart/checkout" class="btn btn-success">Checkout</a>
         </div>
     </div>

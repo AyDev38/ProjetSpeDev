@@ -63,22 +63,21 @@
                   />
                 </div>
                 <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">
-                    Add to Cart
-                    </button>
-                    <% if (isConnected) { %>
-                    
-                    <a href="/edit-product/<%= data.id %>" class="btn btn-warning"
-                        ><i class="fa-regular fa-pen-to-square"></i
-                    ></a>
-                    <a
-                        href="/delete-product/<%= data.id %>"
-                        class="btn btn-danger"
-                        ><i class="fa-solid fa-trash"></i
-                    ></a>
-                    
-                    <% } %>
-                    <a href="/products" class="btn btn-secondary">Cancel</a>
+                  <a href="/add-to-cart/<%= data.id %>/" class="btn btn-primary"
+                  >Add to Cart</a>
+                  <% if (isConnected) { %>
+
+                  <a href="/edit-product/<%= data.id %>" class="btn btn-warning"
+                    ><i class="fa-regular fa-pen-to-square"></i
+                  ></a>
+                  <a
+                    href="/delete-product/<%= data.id %>"
+                    class="btn btn-danger"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
+
+                  <% } %>
+                  <a href="/products" class="btn btn-secondary">Cancel</a>
                 </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
               </form>
