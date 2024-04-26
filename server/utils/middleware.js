@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const User = require('../models/user');
 // Middleware pour faire correspondre le token JWT envoyé par le client avec celui stocké dans la base de données
 const authenticateToken = async (req, res, next) => {
     try {
