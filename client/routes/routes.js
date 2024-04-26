@@ -216,7 +216,7 @@ router.get('/cart', async (req, res) => {
     }
 });
 
-//add cart
+// Route pour ajouter un produit au panier
 router.get('/add-to-cart/:id/:quantity', async (req, res) => {
     try{
         const user = await axios.get(`${BASE_URL}/infos`, {
@@ -231,7 +231,7 @@ router.get('/add-to-cart/:id/:quantity', async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-})
+});
 
 //add cart
 router.post('/add-to-cart', async (req, res) => {
@@ -242,7 +242,7 @@ router.post('/add-to-cart', async (req, res) => {
     }
 })
 
-// delete row cart
+// Route pour supprimer un produit du panier
 router.get('/delete-cart/:id', async (req, res) => {
     try{
         const cart = await axios.delete(`${BASE_URL_CART}/${req.params.id}`)
@@ -250,7 +250,6 @@ router.get('/delete-cart/:id', async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-})
-
+});
 
 module.exports = router;

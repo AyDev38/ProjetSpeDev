@@ -24,39 +24,29 @@ router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({ where: { username: req.body.username } });
         if (!user) {
-            return res.status(404).send({ message: "User not found" });
-        }
-        
-        const match = await bcrypt.compare(req.body.password, user.password);
-        if (!match) {
-            return res.status(401).send({ message: "Incorrect password" });
-        }
-        
-        const token = jwt.sign(
-            { userId: user.id }, // Payload contenant l'ID de l'utilisateur
-            'your_secret_key',   // Secret pour signer le token
-            { expiresIn: '1h' }  // Option pour définir la durée de vie du token
-        );
-
-        user.token = token;
-        await user.save();
-        
-        // Ici commence la gestion du panier en session
-        if (req.session.cart) {
-            for (let item of req.session.cart) {
-                const { productId, quantity } = item;
-                await Cart.create({ userId: user.id, productId, quantity });
+            res.status(404).send({ message: "User not found" });
+        } else {
+            const match = await bcrypt.compare(req.body.password, user.password);
+            if (!match) {
+                res.status(401).send({ message: "Incorrect password" });
+            } else {
+                // Créer un JWT quand l'utilisateur se connecte avec succès
+                const token = jwt.sign(
+                    { userId: user.id }, // Payload contenant l'ID de l'utilisateur
+                    'your_secret_key',   // Secret pour signer le token
+                    { expiresIn: '1h' }  // Option pour définir la durée de vie du token
+                );
+                // Stocker le token dans la table User
+                user.token = token;
+                await user.save();
+                res.send({ token: token, message: "Logged in" });
             }
-            delete req.session.cart; // Videz le panier en session après la fusion
         }
-        
-        res.send({ token: token, message: "Logged in" });
     } catch (error) {
         console.log(error);
-        res.status(500).send(error);
+        res.status(400).send(error);
     }
 });
-
 
 // Route tableau de bord avec vérification du token
 // router.get('/dashboard', authenticateToken, (req, res) => {

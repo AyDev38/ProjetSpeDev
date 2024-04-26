@@ -1,13 +1,10 @@
 const express = require('express');
 const Product = require('../models/product');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const Cart = require('../models/cart');
-// const authenticateToken = require('../utils/middleware')
 
 
 router.post('/add-to-cart', async (req, res) => {
-    console.log(req.body)
     try {
         const product = await Product.findByPk(req.body.productId);
         if (product) {
