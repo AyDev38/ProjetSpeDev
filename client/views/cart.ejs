@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <%- include('navbar') %>
+    <div class="container mt-5">
+        <h1>Shopping Cart</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (cart && cart.length > 0) { %>
+                    <% cart.forEach((item, index) => { %>
+                        <tr>
+                            <th scope="row"><%= index + 1 %></th>
+                            <td><%= item.libelle %></td>
+                            <td>$<%= item.prix %></td>
+                            <td><%= item.quantity %></td>
+                            <td>$<%= item.prix * item.quantity %></td>
+                            <td>
+                                <a href="/cart/remove/<%= item.id %>" class="btn btn-danger">Remove</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="6">No items in the cart</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between">
+            <a href="/products" class="btn btn-primary">Continue Shopping</a>
+            <h3>Total: $<%= total %></h3>
+            <a href="/cart/checkout" class="btn btn-success">Checkout</a>
+        </div>
+    </div>
+</body>
+</html>
